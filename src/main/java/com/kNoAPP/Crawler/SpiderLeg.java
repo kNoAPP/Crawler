@@ -1,9 +1,5 @@
 package com.kNoAPP.Crawler;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,24 +27,18 @@ public class SpiderLeg {
 			if(connection.response().statusCode() == 200) { // 200 is the HTTP OK status code										
 				if(connection.response().contentType().contains("text/html")) {
 					System.out.println("[Visit] " + url);
-					Files.write(Paths.get("C:/Users/alldo/Desktop/crawler.txt"), ("[Visit] " + url + System.lineSeparator()).getBytes(), StandardOpenOption.APPEND);
 					Elements linksOnPage = htmlDocument.select("a[href]");
 					System.out.println("  - Found (" + linksOnPage.size() + ") links");
-					Files.write(Paths.get("C:/Users/alldo/Desktop/crawler.txt"), ("  - Found (" + linksOnPage.size() + ") links" + System.lineSeparator()).getBytes(), StandardOpenOption.APPEND);
 					for(Element link : linksOnPage) links.add(link.absUrl("href"));
 					
 					success = true;
 				} else {
-					System.out.println("[Failure] " + url);
-					Files.write(Paths.get("C:/Users/alldo/Desktop/crawler.txt"), ("[Failure] " + url + System.lineSeparator()).getBytes(), StandardOpenOption.APPEND);
+					System.out.println("[FailureA] " + url);
 					success = false;
 				}
 			}
 		} catch (Exception e) {
-			System.out.println("[Failure] " + url);
-			try {
-				Files.write(Paths.get("C:/Users/alldo/Desktop/crawler.txt"), ("[Failure] " + url + System.lineSeparator()).getBytes(), StandardOpenOption.APPEND);
-			} catch (IOException io) {}
+			System.out.println("[FailureB] " + url);
 			success = false; 
 		}
 	}
